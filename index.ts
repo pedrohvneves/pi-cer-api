@@ -1,10 +1,9 @@
 import { PrismaClient } from '@prisma/client'
-import express, {Request, Response} from 'express';
+import express, { Express, Request, Response} from 'express';
 import cors from 'cors';
 
 //módulos e configurações
-const app = require('express');
-const porta = process.env.PORT;
+const app: Express = require('express');
 app.use(express.json());
 app.use(cors());
 
