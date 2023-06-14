@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Dados {
+  id              Int               @id @default(autoincrement())
+  cpf             String            @unique
+  dataNasc        DateTime
+  genero          String
+  nome            String
+  rg              String
+  email           String
+  telefone        String
+  telefoneAlt     String?
+  Paciente        Paciente[]
+  Funcionario     Funcionario[]
+  EnderecoPessoas EnderecoPessoas[]
+}
+
+model Endereco {
+  id              Int               @id @default(autoincrement())
+  cep             Int
+  cidade          String
+  bairro          String
+  uf              String
+  numero          String
+  rua             String
+  lugradouro      String?
+  EnderecoPessoas EnderecoPessoas[]
+}
+
+model EnderecoPessoas {
+  pessoa     Dados    @relation(fields: [pessoaId], references: [id])
+  pessoaId   Int
+  endereco   Endereco @relation(fields: [enderecoId], references: [id])
+  enderecoId Int
+
+  @@id([pessoaId, enderecoId])
+}
+
+model Paciente {
+  id       Int        @id @default(autoincrement())
+  sus      String     @unique
+  dados    Dados      @relation(fields: [dadosId], references: [id])
+  dadosId  Int
+  Consulta Consulta[]
+}
+
+model Funcionario {
+  id               Int                @id @default(autoincrement())
+  matricula        Int                @unique
+  salario          String
+  cargaHoraria     String
+  dados            Dados              @relation(fields: [dadosId], references: [id])
+  dadosId          Int
+  AtendenteGeral   AtendenteGeral[]
+  AtendenteClinico AtendenteClinico[]
+}
+
+model AtendenteGeral {
+  id            Int         @id @default(autoincrement())
+  cargo         String
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  funcionarioId Int
+}
+
+model AtendenteClinico {
+  id            Int         @id @default(autoincrement())
+  cargo         String
+  registro      String
+  Conselho      String?
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  funcionarioId Int
+  Consulta      Consulta[]
+}
+
+model Consulta {
+  descricao  String
+  data       DateTime
+  paciente   Paciente         @relation(fields: [pacienteId], references: [id])
+  pacienteId Int
+  medico     AtendenteClinico @relation(fields: [medicoId], references: [id])
+  medicoId   Int
+
+  @@id([pacienteId, medicoId, data])
+}
