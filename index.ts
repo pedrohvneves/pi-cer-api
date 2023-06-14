@@ -3,7 +3,7 @@ import express, { Express, Request, Response} from 'express';
 import cors from 'cors';
 
 //módulos e configurações
-const app: Express = require('express');
+const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
