@@ -14,21 +14,37 @@ const prisma = new PrismaClient()
 //routes
 
 //procurar consultas de paciente
-app.post('/consultas/',(req: Request, res: Response)=>{
+app.post('/consultas/', async(req: Request, res: Response)=>{
     //consultar o db por consultas do paciente de cpf do request
     const body: any = req.body;
-    const consultas = prisma.consulta.findMany({
+    const consultas = await prisma.consulta.findMany({
         where:{
             paciente:{
                 is:{
                     dados:{
                         cpf:{
                             equals: body.cpf
-                        }
-                    }
-                }
-            }
-        }
+                        },
+                    },
+                },
+            },
+        },
+        include:{
+            medico:{
+                select:{
+                    cargo:true,
+                    funcionario:{
+                        select:{
+                            dados:{
+                                select:{
+                                    nome:true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
     })
     return res.status(200).json(consultas);
 })
