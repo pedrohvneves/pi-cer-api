@@ -51,4 +51,6 @@ app.post('/consultas/', async(req: Request, res: Response)=>{
 
 
 //iniciar api
-app.listen(8000)
+app.listen(process.env.PORT, ()=> {
+    console.log(`Listening in on port ${process.env.PORT}`)
+})
