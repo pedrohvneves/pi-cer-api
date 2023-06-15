@@ -48,6 +48,15 @@ app.post('/consultas/', async(req: Request, res: Response)=>{
                     },
                 },
             },
+            paciente:{
+                select:{
+                    dados:{
+                        select:{
+                            nome:true
+                        }
+                    },
+                },
+            },
         },
     })
     return res.status(200).json(consultas);
