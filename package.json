@@ -4,6 +4,7 @@
   "description": "API para o sistema da clínica de fisioterapía da Unileste",
   "main": "index.js",
   "scripts": {
+    "build": "prisma generate",
     "dev": "tsc && node dist/index.js",
     "start": "node dist/index.js",
     "postinstall": "tsc"

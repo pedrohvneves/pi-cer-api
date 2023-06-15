@@ -12,6 +12,10 @@ const prisma = new PrismaClient()
 
 
 //routes
+app.get('/',async (req:Request, res: Response) => {
+    res.status(200).send("API conectada!")
+})
+
 
 //procurar consultas de paciente
 app.post('/consultas/', async(req: Request, res: Response)=>{
