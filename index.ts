@@ -18,16 +18,16 @@ app.get('/',async (req:Request, res: Response) => {
 
 
 //procurar consultas de paciente
-app.post('/consultas/', async(req: Request, res: Response)=>{
+app.get('/consultas/:cpf', async(req: Request, res: Response)=>{
     //consultar o db por consultas do paciente de cpf do request
-    const body: any = req.body;
+    const cpf:string = req.params.cpf
     const consultas = await prisma.consulta.findMany({
         where:{
             paciente:{
                 is:{
                     dados:{
                         cpf:{
-                            equals: body.cpf
+                            equals: cpf
                         },
                     },
                 },
