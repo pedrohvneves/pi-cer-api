@@ -18,6 +18,11 @@ app.get('/',async (req:Request, res: Response) => {
 
 
 //procurar consultas de paciente
+//caso não venha um cpf como argumento, provavelmente tem um jeito mais elegante de se fazer isso
+app.get('/consultas',async (req:Request, res:Response) => {
+    res.status(200).json({});    
+})
+
 app.get('/consultas/:cpf', async(req: Request, res: Response)=>{
     //consultar o db por consultas do paciente de cpf do request
     const cpf:string = req.params.cpf
@@ -31,6 +36,9 @@ app.get('/consultas/:cpf', async(req: Request, res: Response)=>{
                         },
                     },
                 },
+            },
+            data:{
+                gte:new Date(),
             },
         },
         include:{
